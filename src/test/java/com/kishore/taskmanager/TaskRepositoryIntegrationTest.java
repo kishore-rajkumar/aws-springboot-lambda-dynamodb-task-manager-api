@@ -9,6 +9,7 @@ import java.util.UUID;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
+import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.DynamicPropertyRegistry;
@@ -18,6 +19,7 @@ import org.testcontainers.junit.jupiter.Container;
 import org.testcontainers.junit.jupiter.Testcontainers;
 import org.testcontainers.utility.DockerImageName;
 
+import com.kishore.taskmanager.config.DynamoProperties;
 import com.kishore.taskmanager.model.Task;
 
 import software.amazon.awssdk.auth.credentials.AwsBasicCredentials;
@@ -35,7 +37,7 @@ import software.amazon.awssdk.services.dynamodb.model.KeySchemaElement;
 import software.amazon.awssdk.services.dynamodb.model.KeyType;
 import software.amazon.awssdk.services.dynamodb.model.ScalarAttributeType;
 
-@SpringBootTest
+@SpringBootTest(classes = {TestAwsConfig.class,DynamoDbClient.class})
 @Testcontainers
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 @ActiveProfiles("test")
@@ -89,6 +91,9 @@ public class TaskRepositoryIntegrationTest {
         taskTable.putItem(task);
 
         Task retrieved = taskTable.getItem(Key.builder().partitionValue(task.getId()).build());
+        
+        System.out.println("Task retrieved - " + retrieved );
+       
 
         assertNotNull(retrieved);
         assertEquals(task.getTitle(), retrieved.getTitle());
