@@ -2,12 +2,14 @@ package com.kishore.taskmanager.model;
 
 import software.amazon.awssdk.enhanced.dynamodb.mapper.annotations.DynamoDbBean;
 import software.amazon.awssdk.enhanced.dynamodb.mapper.annotations.DynamoDbPartitionKey;
+import software.amazon.awssdk.enhanced.dynamodb.mapper.annotations.DynamoDbSecondaryPartitionKey;
 
 @DynamoDbBean
 public class Task {
 	private String id;
 	private String title;
 	private String description;
+	private String status;
 
 	@DynamoDbPartitionKey
 	public String getId() {
@@ -34,8 +36,17 @@ public class Task {
 		this.description = description;
 	}
 
+	@DynamoDbSecondaryPartitionKey(indexNames = "status-index") 
+	public String getStatus() {
+		return status;
+	}
+
+	public void setStatus(String status) {
+		this.status = status;
+	}
+
 	@Override
 	public String toString() {
-		return "[ id - "+ id +", description - " + description + "]";
+		return "Task [id=" + id + ", title=" + title + ", description=" + description + ", status=" + status + "]";
 	}
 }

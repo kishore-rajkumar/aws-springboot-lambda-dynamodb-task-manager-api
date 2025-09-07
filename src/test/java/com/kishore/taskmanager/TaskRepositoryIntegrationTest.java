@@ -2,6 +2,7 @@ package com.kishore.taskmanager;
 
 import static org.junit.Assert.assertNull;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.testcontainers.containers.localstack.LocalStackContainer.Service.DYNAMODB;
@@ -27,16 +28,22 @@ import com.kishore.taskmanager.model.Task;
 import software.amazon.awssdk.auth.credentials.AwsBasicCredentials;
 import software.amazon.awssdk.auth.credentials.StaticCredentialsProvider;
 import software.amazon.awssdk.enhanced.dynamodb.DynamoDbEnhancedClient;
+import software.amazon.awssdk.enhanced.dynamodb.DynamoDbIndex;
 import software.amazon.awssdk.enhanced.dynamodb.DynamoDbTable;
 import software.amazon.awssdk.enhanced.dynamodb.Key;
 import software.amazon.awssdk.enhanced.dynamodb.TableSchema;
+import software.amazon.awssdk.enhanced.dynamodb.model.PageIterable;
+import software.amazon.awssdk.enhanced.dynamodb.model.QueryConditional;
 import software.amazon.awssdk.regions.Region;
 import software.amazon.awssdk.services.dynamodb.DynamoDbClient;
 import software.amazon.awssdk.services.dynamodb.model.AttributeDefinition;
 import software.amazon.awssdk.services.dynamodb.model.BillingMode;
 import software.amazon.awssdk.services.dynamodb.model.CreateTableRequest;
+import software.amazon.awssdk.services.dynamodb.model.GlobalSecondaryIndex;
 import software.amazon.awssdk.services.dynamodb.model.KeySchemaElement;
 import software.amazon.awssdk.services.dynamodb.model.KeyType;
+import software.amazon.awssdk.services.dynamodb.model.Projection;
+import software.amazon.awssdk.services.dynamodb.model.ProjectionType;
 import software.amazon.awssdk.services.dynamodb.model.ScalarAttributeType;
 
 @SpringBootTest(classes = {TestAwsConfig.class,DynamoDbClient.class})
@@ -69,12 +76,43 @@ public class TaskRepositoryIntegrationTest {
     	        ))
     	        .build();
 
-        dynamoDbClient.createTable(CreateTableRequest.builder()
-            .tableName("Tasks")
-            .keySchema(KeySchemaElement.builder().attributeName("id").keyType(KeyType.HASH).build())
-            .attributeDefinitions(AttributeDefinition.builder().attributeName("id").attributeType(ScalarAttributeType.S).build())
-            .billingMode(BillingMode.PAY_PER_REQUEST)
-            .build());
+		/*
+		 * dynamoDbClient.createTable(CreateTableRequest.builder() .tableName("Tasks")
+		 * .keySchema(KeySchemaElement.builder().attributeName("id").keyType(KeyType.
+		 * HASH).build())
+		 * .attributeDefinitions(AttributeDefinition.builder().attributeName("id").
+		 * attributeType(ScalarAttributeType.S).build())
+		 * .billingMode(BillingMode.PAY_PER_REQUEST) .build());
+		 */
+        
+    	dynamoDbClient.createTable(CreateTableRequest.builder()
+    		    .tableName("Tasks")
+    		    .keySchema(KeySchemaElement.builder()
+    		        .attributeName("id")
+    		        .keyType(KeyType.HASH)
+    		        .build())
+    		    .attributeDefinitions(
+    		        AttributeDefinition.builder()
+    		            .attributeName("id")
+    		            .attributeType(ScalarAttributeType.S)
+    		            .build(),
+    		        AttributeDefinition.builder()
+    		            .attributeName("status")
+    		            .attributeType(ScalarAttributeType.S)
+    		            .build()
+    		    )
+    		    .globalSecondaryIndexes(GlobalSecondaryIndex.builder()
+    		        .indexName("status-index")
+    		        .keySchema(KeySchemaElement.builder()
+    		            .attributeName("status")
+    		            .keyType(KeyType.HASH)
+    		            .build())
+    		        .projection(Projection.builder()
+    		            .projectionType(ProjectionType.ALL)
+    		            .build())
+    		        .build())
+    		    .billingMode(BillingMode.PAY_PER_REQUEST)
+    		    .build());
 
         DynamoDbEnhancedClient enhancedClient = DynamoDbEnhancedClient.builder()
             .dynamoDbClient(dynamoDbClient)
@@ -165,6 +203,36 @@ public class TaskRepositoryIntegrationTest {
         // Assert that at least 3 tasks are present
         assertTrue(tasks.size() >= 3);
         tasks.forEach(t -> System.out.println("Found task: " + t.getTitle()));
+    }
+    
+    @Test
+    void testQueryTasksByStatusUsingGSI() {
+        for (int i = 1; i <= 4; i++) {
+            Task task = new Task();
+            task.setId(UUID.randomUUID().toString());
+            task.setTitle("Task " + i);
+            task.setDescription("Status test");
+            task.setStatus(i % 2 == 0 ? "completed" : "pending");
+            taskTable.putItem(task);
+        }
+
+        DynamoDbEnhancedClient enhancedClient = DynamoDbEnhancedClient.builder()
+            .dynamoDbClient(dynamoDbClient)
+            .build();
+
+        DynamoDbIndex<Task> statusIndex = enhancedClient
+            .table("Tasks", TableSchema.fromBean(Task.class))
+            .index("status-index");
+
+        PageIterable<Task> iterable = PageIterable.create(statusIndex.query(
+            r -> r.queryConditional(QueryConditional.keyEqualTo(Key.builder().partitionValue("pending").build()))
+        ));
+
+        List<Task> pendingTasks = new ArrayList<>();
+        iterable.items().forEach(pendingTasks::add);
+
+        assertFalse(pendingTasks.isEmpty());
+        pendingTasks.forEach(t -> System.out.println("🟡 Found pending task: " + t.getTitle()));
     }
 
 
