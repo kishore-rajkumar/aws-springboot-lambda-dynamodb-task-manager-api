@@ -1,5 +1,6 @@
 package com.kishore.taskmanager;
 
+import static org.junit.Assert.assertNull;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.testcontainers.containers.localstack.LocalStackContainer.Service.DYNAMODB;
@@ -9,7 +10,6 @@ import java.util.UUID;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
-import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.DynamicPropertyRegistry;
@@ -19,7 +19,6 @@ import org.testcontainers.junit.jupiter.Container;
 import org.testcontainers.junit.jupiter.Testcontainers;
 import org.testcontainers.utility.DockerImageName;
 
-import com.kishore.taskmanager.config.DynamoProperties;
 import com.kishore.taskmanager.model.Task;
 
 import software.amazon.awssdk.auth.credentials.AwsBasicCredentials;
@@ -99,4 +98,50 @@ public class TaskRepositoryIntegrationTest {
         assertEquals(task.getTitle(), retrieved.getTitle());
         assertEquals(task.getDescription(), retrieved.getDescription());
     }
+    
+    @Test
+    void testUpdateTask() {
+        Task task = new Task();
+        task.setId(UUID.randomUUID().toString());
+        task.setTitle("Original Title");
+        task.setDescription("Original Description");
+
+        taskTable.putItem(task);
+
+        // Update the task
+        task.setTitle("Updated Title");
+        task.setDescription("Updated Description");
+        taskTable.putItem(task);
+
+        Task updated = taskTable.getItem(Key.builder().partitionValue(task.getId()).build());
+
+        assertEquals("Updated Title", updated.getTitle());
+        assertEquals("Updated Description", updated.getDescription());
+    }
+    
+    @Test
+    void testDeleteTask() {
+        Task task = new Task();
+        task.setId(UUID.randomUUID().toString());
+        task.setTitle("To Be Deleted");
+        task.setDescription("This will be removed");
+
+        taskTable.putItem(task);
+
+        taskTable.deleteItem(task);
+
+        Task deleted = taskTable.getItem(Key.builder().partitionValue(task.getId()).build());
+
+        assertNull(deleted);
+    }
+    
+    @Test
+    void testRetrieveMissingTask() {
+        String fakeId = UUID.randomUUID().toString();
+
+        Task result = taskTable.getItem(Key.builder().partitionValue(fakeId).build());
+
+        assertNull(result);
+    }
+
 }
