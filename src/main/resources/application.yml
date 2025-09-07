@@ -1,8 +1,8 @@
 spring:
-  profiles:
-    active: local
+   profiles:
+      active: local
 
 aws:
-  dynamodb:
-    endpoint: http://localhost:8000
-    region: us-east-1
+   dynamodb:
+      endpoint: http://localhost:8000
+      region: us-east-1
