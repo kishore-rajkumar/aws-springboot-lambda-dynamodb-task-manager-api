@@ -62,6 +62,7 @@ jobs:
           sam deploy \
             --stack-name task-manager-api \
             --region $AWS_REGION \
+            --resolve-s3 \
             --capabilities CAPABILITY_IAM \
             --no-confirm-changeset \
             --no-fail-on-empty-changeset
