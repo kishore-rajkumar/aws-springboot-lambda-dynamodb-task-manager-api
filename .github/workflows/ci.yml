@@ -10,20 +10,6 @@ jobs:
   build-and-test:
     runs-on: ubuntu-latest
 
-    services:
-      localstack:
-        image: localstack/localstack:latest
-        ports:
-          - 4566:4566
-        env:
-          SERVICES: dynamodb
-          DEBUG: 1
-        options: >-
-          --health-cmd "curl -f http://localhost:4566/health || exit 1"
-          --health-interval 10s
-          --health-timeout 5s
-          --health-retries 5
-
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
@@ -41,5 +27,22 @@ jobs:
           key: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}
           restore-keys: ${{ runner.os }}-maven-
 
+      - name: Start LocalStack with Docker socket
+        run: |
+          docker run -d --name localstack \
+            -p 4566:4566 \
+            -e SERVICES=dynamodb \
+            -v /var/run/docker.sock:/var/run/docker.sock \
+            localstack/localstack:latest
+
+      - name: Wait for LocalStack to be ready
+        run: |
+          for i in {1..10}; do
+            curl -s http://localhost:4566/health | grep '"dynamodb": "running"' && break
+            echo "Waiting for LocalStack..."
+            sleep 5
+          done
+
       - name: Build and run tests
         run: mvn clean install -Dspring.profiles.active=test
+
