@@ -3,8 +3,11 @@ package com.kishore.taskmanager;
 import static org.junit.Assert.assertNull;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.testcontainers.containers.localstack.LocalStackContainer.Service.DYNAMODB;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 
 import org.junit.jupiter.api.BeforeAll;
@@ -143,5 +146,26 @@ public class TaskRepositoryIntegrationTest {
 
         assertNull(result);
     }
+    
+    @Test
+    void testScanAllTasks() {
+        // Insert multiple tasks
+        for (int i = 1; i <= 3; i++) {
+            Task task = new Task();
+            task.setId(UUID.randomUUID().toString());
+            task.setTitle("Task " + i);
+            task.setDescription("Description " + i);
+            taskTable.putItem(task);
+        }
+
+        // Scan the table
+        List<Task> tasks = new ArrayList<>();
+        taskTable.scan().items().forEach(tasks::add);
+
+        // Assert that at least 3 tasks are present
+        assertTrue(tasks.size() >= 3);
+        tasks.forEach(t -> System.out.println("Found task: " + t.getTitle()));
+    }
+
 
 }
