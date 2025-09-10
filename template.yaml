@@ -19,6 +19,8 @@ Resources:
       Environment:
         Variables:
           TABLE_NAME: !Ref TasksTable
+          AWS_REGION: !Ref AWS::Region
+          SPRING_PROFILES_ACTIVE: cloud
       Policies:
         - DynamoDBCrudPolicy:
             TableName: !Ref TasksTable
