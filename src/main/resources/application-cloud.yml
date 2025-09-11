@@ -1,4 +1,4 @@
 aws:
   dynamodb:
-    region: ${aws-region}
+    region: ${AWS_REGION}
 
