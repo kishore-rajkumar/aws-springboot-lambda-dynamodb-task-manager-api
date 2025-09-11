@@ -6,14 +6,10 @@ on:
   pull_request:
     branches: [ main ]
 
-env:
-  aws-region: ${{ vars.AWS_REGION }}
-
 jobs:
   build-and-test:
     runs-on: ubuntu-latest
     
-
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
@@ -49,6 +45,9 @@ jobs:
 
       - name: Build and run tests
         run: mvn clean install -Dspring.profiles.active=test
+
+      - name: Run tests with cloud profile
+        run: mvn test -Dspring.profiles.active=cloud -DAWS_REGION=${{ vars.AWS_REGION }}
 
       - name: Install AWS SAM CLI
         run: |
