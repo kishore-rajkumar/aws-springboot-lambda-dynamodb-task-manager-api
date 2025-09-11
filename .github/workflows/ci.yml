@@ -7,7 +7,7 @@ on:
     branches: [ main ]
 
 env:
-  AWS_REGION: ${{ vars.AWS_REGION }}
+  aws-region: ${{ vars.AWS_REGION }}
 
 jobs:
   build-and-test:
@@ -61,7 +61,7 @@ jobs:
         env:
           AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          AWS_REGION: ${{ env.AWS_REGION }}
+          AWS_REGION: ${{ env.aws-region }}
         run: |
           sam deploy \
             --stack-name task-manager-api \
