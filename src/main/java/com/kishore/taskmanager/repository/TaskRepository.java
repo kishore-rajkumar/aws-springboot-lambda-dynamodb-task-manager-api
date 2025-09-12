@@ -1,6 +1,7 @@
 package com.kishore.taskmanager.repository;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
@@ -12,6 +13,7 @@ import software.amazon.awssdk.enhanced.dynamodb.DynamoDbEnhancedClient;
 import software.amazon.awssdk.enhanced.dynamodb.DynamoDbTable;
 import software.amazon.awssdk.enhanced.dynamodb.Key;
 import software.amazon.awssdk.enhanced.dynamodb.TableSchema;
+import software.amazon.awssdk.enhanced.dynamodb.model.ScanEnhancedRequest;
 import software.amazon.awssdk.services.dynamodb.DynamoDbClient;
 
 @Repository
@@ -39,9 +41,28 @@ public class TaskRepository {
         taskTable.deleteItem(Key.builder().partitionValue(id).build());
     }
 
-    public List<Task> getAllTasks() {
-        return StreamSupport.stream(taskTable.scan().items().spliterator(), false)
-            .collect(Collectors.toList());
+	/*
+	 * public List<Task> getAllTasks() { return
+	 * StreamSupport.stream(taskTable.scan().items().spliterator(), false)
+	 * .collect(Collectors.toList()); }
+	 */
+    
+
+    public List<Task> getAllTasks(Optional<String> statusFilter, Optional<Integer> limit) {
+        ScanEnhancedRequest.Builder requestBuilder = ScanEnhancedRequest.builder();
+
+        limit.ifPresent(requestBuilder::limit); // ✅ apply limit here
+
+        var scanRequest = requestBuilder.build();
+        var results = StreamSupport.stream(taskTable.scan(scanRequest).items().spliterator(), false);
+
+        if (statusFilter.isPresent()) {
+            results = results.filter(task -> task.getStatus().equalsIgnoreCase(statusFilter.get()));
+        }
+
+        return results.collect(Collectors.toList());
     }
+
+
 	
 }
