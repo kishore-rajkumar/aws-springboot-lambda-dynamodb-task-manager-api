@@ -1,5 +1,9 @@
 package com.kishore.taskmanager.repository;
 
+import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
+
 import org.springframework.stereotype.Repository;
 
 import com.kishore.taskmanager.model.Task;
@@ -34,4 +38,10 @@ public class TaskRepository {
     public void deleteTask(String id) {
         taskTable.deleteItem(Key.builder().partitionValue(id).build());
     }
+
+    public List<Task> getAllTasks() {
+        return StreamSupport.stream(taskTable.scan().items().spliterator(), false)
+            .collect(Collectors.toList());
+    }
+	
 }

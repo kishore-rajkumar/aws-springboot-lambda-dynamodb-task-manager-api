@@ -4,6 +4,7 @@ import com.kishore.taskmanager.model.Task;
 import com.kishore.taskmanager.repository.TaskRepository;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.UUID;
 
 @Service
@@ -34,4 +35,8 @@ public class TaskService {
     public void delete(String id) {
         repository.deleteTask(id);
     }
+
+	public List<Task> finaAll() {
+		return repository.getAllTasks();
+	}
 }
