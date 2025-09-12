@@ -32,7 +32,7 @@ public class TaskController {
         return ResponseEntity.status(HttpStatus.CREATED).body(created);
     }
     
-    @GetMapping("/tasks")
+    @GetMapping
     public ResponseEntity<List<Task>> getAllTasks() {
         List<Task> tasks = service.finaAll();
         return ResponseEntity.ok(tasks);
