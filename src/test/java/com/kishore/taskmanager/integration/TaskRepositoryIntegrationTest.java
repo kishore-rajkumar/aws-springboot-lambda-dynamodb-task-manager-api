@@ -1,4 +1,4 @@
-package com.kishore.taskmanager;
+package com.kishore.taskmanager.integration;
 
 import static org.junit.Assert.assertNull;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -23,6 +23,7 @@ import org.testcontainers.junit.jupiter.Container;
 import org.testcontainers.junit.jupiter.Testcontainers;
 import org.testcontainers.utility.DockerImageName;
 
+import com.kishore.taskmanager.TestAwsConfig;
 import com.kishore.taskmanager.model.Task;
 
 import software.amazon.awssdk.auth.credentials.AwsBasicCredentials;
