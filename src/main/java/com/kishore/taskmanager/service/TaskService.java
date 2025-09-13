@@ -5,6 +5,7 @@ import com.kishore.taskmanager.repository.TaskRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -30,7 +31,12 @@ public class TaskService {
 		if (id == null || id.isBlank())
 			throw new IllegalArgumentException("ID cannot be null or empty");
 		
-		return repository.getTask(id);
+		Task task = repository.getTask(id);
+		
+		if(task==null)
+			throw new NoSuchElementException("Task not found");
+		
+		return task;
 	}
 
 	public Task update(String id, Task task) {

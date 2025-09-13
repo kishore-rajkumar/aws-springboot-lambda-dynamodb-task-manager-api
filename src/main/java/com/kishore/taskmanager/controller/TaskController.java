@@ -1,6 +1,7 @@
 package com.kishore.taskmanager.controller;
 
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.Optional;
 
 import org.springframework.http.HttpStatus;
@@ -34,12 +35,7 @@ public class TaskController {
         return ResponseEntity.status(HttpStatus.CREATED).body(created);
     }
     
-	/*
-	 * @GetMapping public ResponseEntity<List<Task>> getAllTasks() { List<Task>
-	 * tasks = service.finaAll(); return ResponseEntity.ok(tasks); }
-	 */
-    
-    @GetMapping("/tasks")
+    @GetMapping
     public ResponseEntity<List<Task>> getAllTasks(
             @RequestParam Optional<String> status,
             @RequestParam Optional<Integer> limit) {
@@ -47,23 +43,29 @@ public class TaskController {
         return ResponseEntity.ok(tasks);
     }
 
-
-
     @GetMapping("/{id}")
     public ResponseEntity<Task> read(@PathVariable String id) {
-        Task found = service.read(id);
-        return ResponseEntity.ok(found);
+        return ResponseEntity.ok(service.read(id));
     }
 
     @PutMapping("/{id}")
     public ResponseEntity<Task> update(@PathVariable String id, @RequestBody Task task) {
+    	if (id == null || id.isBlank()) {
+    	    throw new IllegalArgumentException("Task ID cannot be blank");
+    	}
+
         Task updated = service.update(id, task);
         return ResponseEntity.ok(updated);
     }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> delete(@PathVariable String id) {
+    	if(id==null || id.isBlank())
+    		throw new IllegalArgumentException("Task id cannot be blank");
+    	
         service.delete(id);
         return ResponseEntity.noContent().build();
     }
+    
+    
 }

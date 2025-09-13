@@ -11,6 +11,7 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.Optional;
 
 import org.junit.jupiter.api.BeforeEach;
@@ -87,6 +88,12 @@ class TaskServiceTest {
 	@Test  // Null or Empty ID on Get
 	void shouldThrowOnNullIdForGet() {
 	    assertThrows(IllegalArgumentException.class, () -> taskService.read(null));
+	}
+	
+	@Test  // No task found by ID on Get
+	void shouldThrowOnNoTaskFoundGet() {
+		when(taskRepository.getTask("9999")).thenReturn(null);
+	    assertThrows(NoSuchElementException.class, () -> taskService.read("9999"));
 	}
 
 	@Test // Create Task
