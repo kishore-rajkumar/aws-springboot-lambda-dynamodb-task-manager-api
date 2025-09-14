@@ -43,7 +43,7 @@ import software.amazon.awssdk.services.dynamodb.model.Projection;
 import software.amazon.awssdk.services.dynamodb.model.ProjectionType;
 import software.amazon.awssdk.services.dynamodb.model.ScalarAttributeType;
 
-@SpringBootTest(classes = {TestAwsConfig.class,DynamoDbClient.class})
+@SpringBootTest(classes = {DynamoDbClient.class})
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 @Import(LocalStackTestConfig.class)
 @ActiveProfiles("test")
