@@ -15,6 +15,7 @@ import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.context.annotation.Import;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.DynamicPropertyRegistry;
 import org.springframework.test.context.DynamicPropertySource;
@@ -23,7 +24,6 @@ import org.testcontainers.junit.jupiter.Container;
 import org.testcontainers.junit.jupiter.Testcontainers;
 import org.testcontainers.utility.DockerImageName;
 
-import com.kishore.taskmanager.TestAwsConfig;
 import com.kishore.taskmanager.model.Task;
 
 import software.amazon.awssdk.auth.credentials.AwsBasicCredentials;
@@ -47,27 +47,18 @@ import software.amazon.awssdk.services.dynamodb.model.Projection;
 import software.amazon.awssdk.services.dynamodb.model.ProjectionType;
 import software.amazon.awssdk.services.dynamodb.model.ScalarAttributeType;
 
-@SpringBootTest(classes = {TestAwsConfig.class,DynamoDbClient.class})
-@Testcontainers
+@SpringBootTest(classes = {DynamoDbClient.class})
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
+@Import(LocalStackTestConfig.class)
 @ActiveProfiles("test")
 public class TaskRepositoryIntegrationTest {
-
-    @Container
-    static final LocalStackContainer localstack = new LocalStackContainer(DockerImageName.parse("localstack/localstack"))
-        .withServices(DYNAMODB);
 
     private DynamoDbClient dynamoDbClient;
     private DynamoDbTable<Task> taskTable;
 
-    @DynamicPropertySource
-    static void overrideProperties(DynamicPropertyRegistry registry) {
-        registry.add("aws.dynamodb.endpoint", () -> localstack.getEndpointOverride(DYNAMODB).toString());
-        registry.add("aws.dynamodb.region", () -> localstack.getRegion().toString());
-    }
-
     @BeforeAll
     void setup() {
+    	LocalStackContainer localstack = LocalStackTestConfig.getContainer();
     	
     	dynamoDbClient = DynamoDbClient.builder()
     	        .endpointOverride(localstack.getEndpointOverride(DYNAMODB))
@@ -76,15 +67,6 @@ public class TaskRepositoryIntegrationTest {
     	            AwsBasicCredentials.create("accesskey", "secretkey")
     	        ))
     	        .build();
-
-		/*
-		 * dynamoDbClient.createTable(CreateTableRequest.builder() .tableName("Tasks")
-		 * .keySchema(KeySchemaElement.builder().attributeName("id").keyType(KeyType.
-		 * HASH).build())
-		 * .attributeDefinitions(AttributeDefinition.builder().attributeName("id").
-		 * attributeType(ScalarAttributeType.S).build())
-		 * .billingMode(BillingMode.PAY_PER_REQUEST) .build());
-		 */
         
     	dynamoDbClient.createTable(CreateTableRequest.builder()
     		    .tableName("Tasks")
