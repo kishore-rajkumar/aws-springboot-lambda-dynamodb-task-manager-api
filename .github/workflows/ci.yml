@@ -47,9 +47,8 @@ jobs:
       #   run: mvn clean install -Dspring.profiles.active=test
 
       - name: Run tests with cloud profile
-        # run: mvn test -Dspring.profiles.active=cloud -DAWS_REGION=${{ vars.AWS_REGION }}
-        run: mvn test -Dspring.profiles.active=cloud -DAWS_REGION=us-east-1
-
+        run: mvn test -Dspring.profiles.active=cloud -DAWS_REGION=${{ vars.AWS_REGION }}
+        
       - name: Install AWS SAM CLI
         run: |
           pip install aws-sam-cli
