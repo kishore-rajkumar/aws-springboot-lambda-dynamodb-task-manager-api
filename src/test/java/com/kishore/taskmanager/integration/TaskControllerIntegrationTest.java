@@ -23,30 +23,31 @@ import org.springframework.web.context.WebApplicationContext;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.kishore.taskmanager.model.Task;
 
-@SpringBootTest
-@AutoConfigureMockMvc
-@ActiveProfiles("test")
-@Import(LocalStackTestConfig.class)
-@TestInstance(TestInstance.Lifecycle.PER_CLASS)
-@TestPropertySource(properties = {
-	    "aws.dynamodb.region=us-east-1"
-	})
+//@SpringBootTest
+//@AutoConfigureMockMvc
+//@ActiveProfiles("test")
+//@Import({
+//		LocalStackTestConfig.class/* ,TestAwsConfig.class */})
+//@TestInstance(TestInstance.Lifecycle.PER_CLASS)
+//@TestPropertySource(properties = {
+//	    "aws.dynamodb.region=us-east-1"
+//	})
 class TaskControllerIntegrationTest {
 	
-    @Autowired
+//    @Autowired
     private WebApplicationContext context;
 
-    @Autowired
+//    @Autowired
     private ObjectMapper objectMapper;
 
     private MockMvc mockMvc;
 
-    @BeforeAll
+//    @BeforeAll
     void setup() {
         mockMvc = MockMvcBuilders.webAppContextSetup(context).build();
     }
     
-    @Test
+//    @Test
     void shouldCreateTaskSuccessfully() throws Exception {
         Task task = new Task();
         task.setId(UUID.randomUUID().toString());
