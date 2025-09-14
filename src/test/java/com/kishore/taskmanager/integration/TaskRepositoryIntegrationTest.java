@@ -17,13 +17,9 @@ import org.junit.jupiter.api.TestInstance;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.context.annotation.Import;
 import org.springframework.test.context.ActiveProfiles;
-import org.springframework.test.context.DynamicPropertyRegistry;
-import org.springframework.test.context.DynamicPropertySource;
 import org.testcontainers.containers.localstack.LocalStackContainer;
-import org.testcontainers.junit.jupiter.Container;
-import org.testcontainers.junit.jupiter.Testcontainers;
-import org.testcontainers.utility.DockerImageName;
 
+import com.kishore.taskmanager.TestAwsConfig;
 import com.kishore.taskmanager.model.Task;
 
 import software.amazon.awssdk.auth.credentials.AwsBasicCredentials;
@@ -47,7 +43,7 @@ import software.amazon.awssdk.services.dynamodb.model.Projection;
 import software.amazon.awssdk.services.dynamodb.model.ProjectionType;
 import software.amazon.awssdk.services.dynamodb.model.ScalarAttributeType;
 
-@SpringBootTest(classes = {DynamoDbClient.class})
+@SpringBootTest(classes = {TestAwsConfig.class,DynamoDbClient.class})
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 @Import(LocalStackTestConfig.class)
 @ActiveProfiles("test")
