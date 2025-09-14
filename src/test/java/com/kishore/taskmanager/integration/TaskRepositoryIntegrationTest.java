@@ -5,7 +5,6 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
-import static org.testcontainers.containers.localstack.LocalStackContainer.Service.DYNAMODB;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -14,20 +13,9 @@ import java.util.UUID;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.context.annotation.Import;
-import org.springframework.test.context.ActiveProfiles;
-import org.springframework.test.context.DynamicPropertyRegistry;
-import org.springframework.test.context.DynamicPropertySource;
-import org.testcontainers.containers.localstack.LocalStackContainer;
-import org.testcontainers.junit.jupiter.Container;
-import org.testcontainers.junit.jupiter.Testcontainers;
-import org.testcontainers.utility.DockerImageName;
 
 import com.kishore.taskmanager.model.Task;
 
-import software.amazon.awssdk.auth.credentials.AwsBasicCredentials;
-import software.amazon.awssdk.auth.credentials.StaticCredentialsProvider;
 import software.amazon.awssdk.enhanced.dynamodb.DynamoDbEnhancedClient;
 import software.amazon.awssdk.enhanced.dynamodb.DynamoDbIndex;
 import software.amazon.awssdk.enhanced.dynamodb.DynamoDbTable;
@@ -35,74 +23,20 @@ import software.amazon.awssdk.enhanced.dynamodb.Key;
 import software.amazon.awssdk.enhanced.dynamodb.TableSchema;
 import software.amazon.awssdk.enhanced.dynamodb.model.PageIterable;
 import software.amazon.awssdk.enhanced.dynamodb.model.QueryConditional;
-import software.amazon.awssdk.regions.Region;
 import software.amazon.awssdk.services.dynamodb.DynamoDbClient;
-import software.amazon.awssdk.services.dynamodb.model.AttributeDefinition;
-import software.amazon.awssdk.services.dynamodb.model.BillingMode;
-import software.amazon.awssdk.services.dynamodb.model.CreateTableRequest;
-import software.amazon.awssdk.services.dynamodb.model.GlobalSecondaryIndex;
-import software.amazon.awssdk.services.dynamodb.model.KeySchemaElement;
-import software.amazon.awssdk.services.dynamodb.model.KeyType;
-import software.amazon.awssdk.services.dynamodb.model.Projection;
-import software.amazon.awssdk.services.dynamodb.model.ProjectionType;
-import software.amazon.awssdk.services.dynamodb.model.ScalarAttributeType;
 
-@SpringBootTest(classes = {DynamoDbClient.class})
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
-@Import(LocalStackTestConfig.class)
-@ActiveProfiles("test")
-public class TaskRepositoryIntegrationTest {
+public class TaskRepositoryIntegrationTest extends BaseDynamoDbIntegrationTest {
 
     private DynamoDbClient dynamoDbClient;
     private DynamoDbTable<Task> taskTable;
-
+    
     @BeforeAll
-    void setup() {
-    	LocalStackContainer localstack = LocalStackTestConfig.getContainer();
-    	
-    	dynamoDbClient = DynamoDbClient.builder()
-    	        .endpointOverride(localstack.getEndpointOverride(DYNAMODB))
-    	        .region(Region.of(localstack.getRegion().toString()))
-    	        .credentialsProvider(StaticCredentialsProvider.create(
-    	            AwsBasicCredentials.create("accesskey", "secretkey")
-    	        ))
-    	        .build();
-        
-    	dynamoDbClient.createTable(CreateTableRequest.builder()
-    		    .tableName("Tasks")
-    		    .keySchema(KeySchemaElement.builder()
-    		        .attributeName("id")
-    		        .keyType(KeyType.HASH)
-    		        .build())
-    		    .attributeDefinitions(
-    		        AttributeDefinition.builder()
-    		            .attributeName("id")
-    		            .attributeType(ScalarAttributeType.S)
-    		            .build(),
-    		        AttributeDefinition.builder()
-    		            .attributeName("status")
-    		            .attributeType(ScalarAttributeType.S)
-    		            .build()
-    		    )
-    		    .globalSecondaryIndexes(GlobalSecondaryIndex.builder()
-    		        .indexName("status-index")
-    		        .keySchema(KeySchemaElement.builder()
-    		            .attributeName("status")
-    		            .keyType(KeyType.HASH)
-    		            .build())
-    		        .projection(Projection.builder()
-    		            .projectionType(ProjectionType.ALL)
-    		            .build())
-    		        .build())
-    		    .billingMode(BillingMode.PAY_PER_REQUEST)
-    		    .build());
-
-        DynamoDbEnhancedClient enhancedClient = DynamoDbEnhancedClient.builder()
-            .dynamoDbClient(dynamoDbClient)
-            .build();
-
+    void setupTable() {
+        createTasksTable();
         taskTable = enhancedClient.table("Tasks", TableSchema.fromBean(Task.class));
     }
+
 
     @Test
     void testSaveAndRetrieveTask() {
