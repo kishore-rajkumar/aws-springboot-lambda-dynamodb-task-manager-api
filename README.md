@@ -102,7 +102,7 @@ This project is a cloud-native, serverless task management API built with **Spri
 
 ## 👨‍💻 Author
 
-- [Kishore Rajkumar](https://github.com/kishore-rajkumar) — Backend Engineer & Solution Architect  
+[Kishore Rajkumar](https://github.com/kishore-rajkumar) — Backend Engineer & Solution Architect  
 Currently Assistant Director IT in government, transitioning into a hands-on technical role in cloud-native software engineering.
 
 ---
