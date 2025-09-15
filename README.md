@@ -25,7 +25,9 @@ This project is a cloud-native, serverless task management API built with **Spri
 | Local Testing | Testcontainers + LocalStack     | Simulated AWS environment for integration    |
 
 ---
-
+## 🧭 Architecture Diagram
+![Architecture Diagram](.docs/architecture.png)
+---
 ## 📦 Features Implemented
 
 - ✅ Create, update, delete, and retrieve tasks
