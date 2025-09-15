@@ -26,7 +26,8 @@ This project is a cloud-native, serverless task management API built with **Spri
 
 ---
 ## 🧭 Architecture Diagram
-![Architecture Diagram](.docs/architecture.png)
+
+![Architecture Diagram](.doc/architecture.png)
 ---
 ## 📦 Features Implemented
 
