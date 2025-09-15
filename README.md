@@ -1,150 +1,105 @@
-# AWS Spring Boot Lambda DynamoDB Task Manager API
+# 🧩 Task Manager API — Serverless Portfolio Project
 
-This project is a Task Manager API built using Spring Boot and AWS Lambda, with DynamoDB as the persistent storage layer. It demonstrates a serverless architecture on AWS, leveraging the scalability and cost-effectiveness of Lambda functions while providing a robust API for managing tasks.
+This project is a cloud-native, serverless task management API built with **Spring Boot**, **AWS Lambda**, and **DynamoDB**, designed to demonstrate hands-on expertise in **Java**, **AWS architecture**, and **system design**. It serves as a portfolio artifact for showcasing backend engineering and solution architecture capabilities.
 
-## Features
+---
 
-- **Serverless API:** Powered by AWS Lambda using Spring Boot for rapid development and deployment.
-- **CRUD Operations:** Create, read, update, and delete tasks.
-- **DynamoDB Integration:** Persistent and highly available data storage.
-- **RESTful Endpoints:** Easy-to-use REST API structure.
-- **Scalable Architecture:** Designed to scale automatically with AWS Lambda and DynamoDB.
-- **Easy Deployment:** Integrates with AWS SAM/Serverless Framework for streamlined deployments.
-- **LocalStack Integration:** Run and test AWS services locally for development and CI environments.
+## 🚀 Objectives
 
-## Getting Started
+- Build a modular, production-ready REST API using Spring Boot and AWS services
+- Apply serverless principles with AWS Lambda and API Gateway
+- Design scalable data models using DynamoDB with GSIs
+- Implement CI/CD pipelines and local testing strategies
+- Explore AWS concepts from a solution architect’s perspective
 
-### Prerequisites
+---
 
-- Java 11+ (recommended)
-- Maven
-- AWS CLI configured with appropriate permissions
-- AWS account with DynamoDB and Lambda access
-- [LocalStack](https://github.com/localstack/localstack) for local AWS service emulation
+## 🏗️ Architecture Overview
 
-### Local Development
+| Layer         | Technology                     | Purpose                                      |
+|--------------|----------------------------------|----------------------------------------------|
+| Compute       | AWS Lambda + Spring Boot        | Stateless function execution                 |
+| API Gateway   | REST API                        | HTTP routing to Lambda                       |
+| Storage       | DynamoDB                        | NoSQL persistence with GSI for status query  |
+| CI/CD         | GitHub Actions                  | Automated build, test, and deploy            |
+| Local Testing | Testcontainers + LocalStack     | Simulated AWS environment for integration    |
 
-1. **Clone the repository:**
-   ```bash
-   git clone https://github.com/kishore-rajkumar/aws-springboot-lambda-dynamodb-task-manager-api.git
-   cd aws-springboot-lambda-dynamodb-task-manager-api
-   ```
+---
 
-2. **Build the project:**
-   ```bash
-   mvn clean package
-   ```
+## 📦 Features Implemented
 
-3. **Run locally:**
-   ```bash
-   mvn spring-boot:run
-   ```
+- ✅ Create, update, delete, and retrieve tasks
+- ✅ Query tasks by status using DynamoDB GSI
+- ✅ Integration tests using LocalStack and Testcontainers
+- ✅ Controller tests with MockMvc
+- ✅ Modular separation of controller, service, and repository layers
+- ✅ Dynamic property injection for test environments
+- ✅ Spring Boot Lambda handler for AWS deployment
 
-### Local Testing with LocalStack
+---
 
-This project supports local testing using [LocalStack](https://github.com/localstack/localstack), an open-source tool that emulates AWS services on your local machine. This enables fast, cost-effective, and reliable development by running your infrastructure locally.
+## 🧪 Testing Strategy
 
-#### How to Use LocalStack
+- **Unit Tests**: Validate service and repository logic in isolation
+- **Integration Tests**: Use LocalStack to simulate DynamoDB and test real interactions
+- **Controller Tests**: Use MockMvc to verify REST endpoints and request handling
 
-1. **Install LocalStack:**
-   ```bash
-   pip install localstack
-   ```
-   or use Docker:
-   ```bash
-   docker run --rm -it -p 4566:4566 -p 4571:4571 localstack/localstack
-   ```
+---
 
-2. **Start LocalStack:**
-   ```bash
-   localstack start
-   ```
+## ⚠️ Challenges Faced & Solutions
 
-3. **Configure AWS CLI to use LocalStack endpoints:**
-   Example for DynamoDB:
-   ```bash
-   aws --endpoint-url=http://localhost:4566 dynamodb list-tables
-   ```
+### 1. **DynamoDB Client Failing in CI**
+- ❌ Error: `Unable to load region from any of the providers in the chain`
+- ✅ Solution: Explicitly set region and endpoint using `@DynamicPropertySource` and inject via `DynamoProperties`
 
-4. **Run integration tests:**
-   - The project includes test configurations that use LocalStack endpoints for AWS services.
-   - Make sure your test environment variables are set to point at LocalStack (e.g., `AWS_ACCESS_KEY_ID`, `AWS_SECRET_ACCESS_KEY`, `AWS_REGION`, and custom endpoints).
+### 2. **Credential Resolution Failure**
+- ❌ Error: `Unable to load credentials from any of the providers in the chain`
+- ✅ Solution: Inject static credentials (`accessKey`, `secretKey`) via test profile and configure `AwsConfig` to use `StaticCredentialsProvider`
 
-5. **Benefits:**
-   - No need for real AWS resources for development or CI/CD.
-   - Rapid feedback, cost savings, and improved reproducibility.
+### 3. **Cold Start Performance in Lambda**
+- ❌ Spring Boot startup time impacts Lambda responsiveness
+- ✅ Solution: Investigated lighter frameworks (Micronaut, Quarkus) and optimized bean loading
 
-### Deploying to AWS
+### 4. **Test Isolation and Environment Separation**
+- ❌ Mixing test and production config caused brittle tests
+- ✅ Solution: Used `@TestPropertySource` and `LocalStackTestConfig` to isolate test environment
 
-This project is designed to be deployed as a Lambda function. Use AWS SAM or the Serverless Framework.
+---
 
-#### Using AWS SAM
+## 📚 AWS Concepts Explored
 
-1. **Install AWS SAM CLI:**  
-   [AWS SAM Installation Guide](https://docs.aws.amazon.com/serverless-application-model/latest/developerguide/install-sam-cli.html)
+| Concept             | Applied In Project                          |
+|---------------------|---------------------------------------------|
+| Lambda              | Spring Boot handler for stateless compute   |
+| API Gateway         | REST endpoint routing to Lambda             |
+| DynamoDB            | Table design, GSI, conditional queries      |
+| IAM                 | Execution roles and least privilege access  |
+| CloudWatch Logs     | Structured logging and observability        |
+| CI/CD               | GitHub Actions for build and test automation|
+| LocalStack          | Simulated AWS services for integration tests|
 
-2. **Build and deploy:**
-   ```bash
-   sam build
-   sam deploy --guided
-   ```
+---
 
-#### Using Serverless Framework
+## 🧠 Next Steps
 
-1. **Install Serverless Framework:**  
-   `npm install -g serverless`
+- Add pagination and filtering to task queries
+- Integrate Cognito or IAM for API security
+- Deploy infrastructure using AWS SAM or Terraform
+- Add DynamoDB Streams for event-driven workflows
+- Implement structured logging with correlation IDs
 
-2. **Deploy:**
-   ```bash
-   serverless deploy
-   ```
+---
 
-## API Endpoints
+## 👨‍💻 Author
 
-| Method | Endpoint        | Description             |
-|--------|----------------|------------------------|
-| GET    | `/tasks`       | List all tasks         |
-| POST   | `/tasks`       | Create a new task      |
-| GET    | `/tasks/{id}`  | Get a task by ID       |
-| PUT    | `/tasks/{id}`  | Update a task by ID    |
-| DELETE | `/tasks/{id}`  | Delete a task by ID    |
+**Kishore** — Backend Engineer & Solution Architect  
+Currently Assistant Director IT in government, transitioning into a hands-on technical role in cloud-native software engineering.
 
-### Example Task Object
+---
 
-```json
-{
-  "id": "123",
-  "title": "Buy groceries",
-  "description": "Milk, Bread, Eggs",
-  "status": "PENDING"
-}
-```
+## 📜 License
 
-## DynamoDB Table
-
-- **Table Name:** `Tasks`
-- **Primary Key:** `id` (String)
-
-## Technologies Used
-
-- AWS Lambda
-- AWS DynamoDB
-- Spring Boot
-- Maven
-- AWS SAM / Serverless Framework
-- LocalStack (for local AWS service emulation)
-
-## Contributing
-
-Contributions are welcome! Please fork the repository and submit a pull request.
-
-## License
-
-This project is licensed under the MIT License.
-
-## Author
-
-- [Kishore Rajkumar](https://github.com/kishore-rajkumar)
+This project is open for educational and portfolio purposes. Feel free to fork and adapt.
 
 ## References
 
