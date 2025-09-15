@@ -3,6 +3,8 @@
 ![Java](https://img.shields.io/badge/java-17-blue)
 ![Spring Boot](https://img.shields.io/badge/spring--boot-3.5-green)
 ![AWS Lambda](https://img.shields.io/badge/aws-lambda-yellow)
+![DynamoDB](https://img.shields.io/badge/aws-dynamodb-blue)
+![CI/CD](https://img.shields.io/badge/ci--cd-github--actions-purple)
 
 # 🧩 Task Manager API — Serverless Portfolio Project
 
