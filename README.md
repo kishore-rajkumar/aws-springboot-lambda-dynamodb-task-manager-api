@@ -1,5 +1,3 @@
-## Badges
-
 ![Build](https://img.shields.io/github/actions/workflow/status/your-username/task-manager-api/ci.yml?branch=main)
 ![License](https://img.shields.io/badge/license-MIT-blue.svg)
 ![Java](https://img.shields.io/badge/java-17-blue)
