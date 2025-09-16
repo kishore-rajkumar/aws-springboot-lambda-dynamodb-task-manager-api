@@ -43,7 +43,7 @@ This project is a cloud-native, serverless task management API built with **Spri
 ✅ Integration tests using LocalStack and Testcontainers  
 ✅ Controller tests with MockMvc  
 ✅ Modular separation of controller, service, and repository layers  
-✅ Dynamic property injection for test environments
+✅ Dynamic property injection for test environments  
 ✅ Spring Boot Lambda handler for AWS deployment
 
 ---
