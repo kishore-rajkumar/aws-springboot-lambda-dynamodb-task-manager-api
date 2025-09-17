@@ -40,15 +40,18 @@ This project is a cloud-native, serverless task management API built with **Spri
 
 ---
 
-## 📦 Features Implemented
+## ✨ Features
 
-✅ Create, update, delete, and retrieve tasks  
+✅ Create, update, delete, and retrieve tasks via REST API  
 ✅ Query tasks by status using DynamoDB GSI  
+✅ Serverless deployment using AWS Lambda and API Gateway  
+✅ Local testing with LocalStack and profile-based configuration  
 ✅ Integration tests using LocalStack and Testcontainers  
-✅ Controller tests with MockMvc  
+✅ CI/CD pipeline with GitHub Actions  
 ✅ Modular separation of controller, service, and repository layers  
 ✅ Dynamic property injection for test environments  
-✅ Spring Boot Lambda handler for AWS deployment
+✅ Structured logging and centralized error handling  
+
 
 ---
 
