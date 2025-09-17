@@ -55,6 +55,21 @@ This project is a cloud-native, serverless task management API built with **Spri
 
 ---
 
+## 🛠️ Tech Stack
+
+- **Java 17** – Core language for backend development
+- **Spring Boot** – Framework for building RESTful APIs
+- **AWS Lambda** – Serverless compute for scalable execution
+- **Amazon DynamoDB** – NoSQL database for task storage
+- **API Gateway** – Entry point for REST endpoints
+- **LocalStack** – Local AWS emulation for integration testing
+- **GitHub Actions** – CI/CD pipeline automation
+- **SAM CLI** – Infrastructure as code for Lambda deployment
+- **SLF4J + MDC** – Structured logging and traceability
+- **JUnit + Mockito** – Unit and integration testing framework
+
+---
+
 ## 🧪 Testing Strategy
 
 - **Unit Tests**: Validate service and repository logic in isolation
