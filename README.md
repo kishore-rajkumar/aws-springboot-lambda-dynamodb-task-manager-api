@@ -11,22 +11,19 @@
 ![LocalStack](https://img.shields.io/badge/tested--with-localstack-lightgrey)
 
 
-
 This project is a cloud-native, serverless task management API built with **Spring Boot**, **AWS Lambda**, and **DynamoDB**, designed to demonstrate hands-on expertise in **Java**, **AWS architecture**, and **system design**. It serves as a portfolio artifact for showcasing backend engineering and solution architecture capabilities.
 
----
 
-## 🚀 Objectives
+# 🚀 Objectives
 
 - Build a modular, production-ready REST API using Spring Boot and AWS services
 - Apply serverless principles with AWS Lambda and API Gateway
 - Design scalable data models using DynamoDB with GSIs
 - Implement CI/CD pipelines and local testing strategies
-- Explore AWS concepts from a solution architect’s perspective
+- Explore AWS concepts from a solution architect’s perspective  
 
----
-
-## 🏗️ Architecture Overview
+  
+# 🏗️ Architecture Overview
 
 | Layer         | Technology                     | Purpose                                      |
 |--------------|----------------------------------|----------------------------------------------|
@@ -36,14 +33,12 @@ This project is a cloud-native, serverless task management API built with **Spri
 | CI/CD         | GitHub Actions                  | Automated build, test, and deploy            |
 | Local Testing | Testcontainers + LocalStack     | Simulated AWS environment for integration    |
 
----
-## 🧭 Architecture Diagram
+# 🧭 Architecture Diagram
 
 ![Architecture Diagram](doc/architecture.png)
 
----
 
-## ✨ Features
+# ✨ Features
 
 ✅ Create, update, delete, and retrieve tasks via REST API  
 ✅ Query tasks by status using DynamoDB GSI  
@@ -56,9 +51,7 @@ This project is a cloud-native, serverless task management API built with **Spri
 ✅ Structured logging and centralized error handling  
 
 
----
-
-## 🛠️ Tech Stack
+# 🛠️ Tech Stack
 
 - **Java 17** – Core language for backend development
 - **Spring Boot** – Framework for building RESTful APIs
@@ -71,17 +64,13 @@ This project is a cloud-native, serverless task management API built with **Spri
 - **SLF4J + MDC** – Structured logging and traceability
 - **JUnit + Mockito** – Unit and integration testing framework
 
----
-
-## 🧪 Testing Strategy
+# 🧪 Testing Strategy
 
 - **Unit Tests**: Validate service and repository logic in isolation
 - **Integration Tests**: Use LocalStack to simulate DynamoDB and test real interactions
 - **Controller Tests**: Use MockMvc to verify REST endpoints and request handling
 
----
-
-## 📦 Usage Examples
+# 📦 Usage Examples
 
 ### Create a Task
 ```bash
@@ -119,7 +108,6 @@ curl -X PUT https://your-api-url/tasks/{taskId} \
   ```bash
   curl -X DELETE https://your-api-url/tasks/{taskId}
   ```
----
 
 # 🚀 Deployment Guide
 
@@ -127,9 +115,8 @@ This guide explains how to deploy the Task Manager API using AWS SAM CLI.
 
 📖 [Deployment Guide](doc/deployment-guide.md)
 
----
 
-## 🛠️ Troubleshooting Snapshot
+# 🛠️ Troubleshooting Snapshot
 
 |   Issue Description                             | ❗ Error Message / Symptom                                      | ✅ Resolution Summary                                           |
 |--------------------------------------------------|----------------------------------------------------------------|----------------------------------------------------------------|
@@ -148,9 +135,9 @@ This guide explains how to deploy the Task Manager API using AWS SAM CLI.
 | ⏱️ Lambda timeout/memory exceeded                | Function crashed under load                                    | Increased limits and optimized queries                        |
 | 📚 Documentation lagging behind                  | Features undocumented or outdated                              | Created `docs/`, added diagrams, changelogs, and badges       |
 
----
 
-## ⚠️ Challenges Faced & Solutions
+
+# ⚠️ Challenges Faced & Solutions
 
 This section documents real-world challenges encountered while building and deploying the Task Manager API, along with the solutions and architectural insights that shaped the final system.
 
@@ -224,9 +211,8 @@ This section documents real-world challenges encountered while building and depl
 ✅ **Fix**: Created a `docs/` folder, added diagrams, changelogs, and badges.  
 💡 **Insight**: Documentation is part of the system — version it, test it, and treat it as essential.
 
----
 
-## 📚 AWS Concepts Explored
+# 📚 AWS Concepts Explored
 
 | Concept             | Applied In Project                          |
 |---------------------|---------------------------------------------|
@@ -238,9 +224,8 @@ This section documents real-world challenges encountered while building and depl
 | CI/CD               | GitHub Actions for build and test automation|
 | LocalStack          | Simulated AWS services for integration tests|
 
----
 
-## 🧠 Next Steps
+# 🧠 Next Steps
 
 - Add pagination and filtering to task queries
 - Integrate Cognito or IAM for API security
@@ -248,20 +233,18 @@ This section documents real-world challenges encountered while building and depl
 - Add DynamoDB Streams for event-driven workflows
 - Implement structured logging with correlation IDs
 
----
 
-## 👨‍💻 Author
+# 👨‍💻 Author
 
 [Kishore Rajkumar](https://github.com/kishore-rajkumar) — Backend Engineer & Solution Architect  
 Currently Assistant Director IT in government, transitioning into a hands-on technical role in cloud-native software engineering.
 
----
 
-## 📜 License
+# 📜 License
 
 This project is open for educational and portfolio purposes. Feel free to fork and adapt.
 
-## References
+# References
 
 - [Spring Cloud Function AWS Adapter](https://docs.spring.io/spring-cloud-function/docs/current/reference/html/aws.html)
 - [AWS Lambda Java Documentation](https://docs.aws.amazon.com/lambda/latest/dg/java-handler.html)
