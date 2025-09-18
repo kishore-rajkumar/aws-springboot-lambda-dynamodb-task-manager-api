@@ -122,7 +122,7 @@ curl -X PUT https://your-api-url/tasks/{taskId} \
 
 This guide explains how to deploy the Task Manager API using AWS SAM CLI.
 
-📖 [Deployment Guide](docs/deployment-guide.md)
+📖 [Deployment Guide](doc/deployment-guide.md)
 
 ---
 
