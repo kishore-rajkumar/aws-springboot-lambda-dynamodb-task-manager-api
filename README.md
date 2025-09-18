@@ -77,6 +77,47 @@ This project is a cloud-native, serverless task management API built with **Spri
 - **Controller Tests**: Use MockMvc to verify REST endpoints and request handling
 
 ---
+
+## 📦 Usage Examples
+
+### Create a Task
+```bash
+curl -X POST https://your-api-url/tasks \
+  -H "Content-Type: application/json" \
+  -d '{
+    "title": "Write documentation",
+    "description": "Add usage examples to README",
+    "status": "PENDING"
+  }'
+```
+
+### Get All Tasks
+```bash
+curl -X GET https://your-api-url/tasks
+```
+
+### Get Tasks by Status
+```bash
+curl -X GET "https://your-api-url/tasks?status=IN_PROGRESS"
+```
+
+### Update a Task
+```bash
+curl -X PUT https://your-api-url/tasks/{taskId} \
+  -H "Content-Type: application/json" \
+  -d '{
+    "title": "Write documentation",
+    "description": "Add usage examples to README",
+    "status": "COMPLETED"
+  }'
+  ```
+
+  ### Delete a Task
+  ```bash
+  curl -X DELETE https://your-api-url/tasks/{taskId}
+  ```
+---
+
 ## 🛠️ Troubleshooting Snapshot
 
 |   Issue Description                             | ❗ Error Message / Symptom                                      | ✅ Resolution Summary                                           |
