@@ -1,5 +1,6 @@
 # 🧩 Task Manager API — Serverless Portfolio Project
 ![Build](https://img.shields.io/github/actions/workflow/status/kishore-rajkumar/aws-springboot-lambda-dynamodb-task-manager-api/ci.yml?branch=main)
+![CI](https://github.com/kishore-rajkumar/aws-springboot-lambda-dynamodb-task-manager-api/actions/workflows/ci.yml/badge.svg)
 ![License](https://img.shields.io/badge/license-MIT-blue.svg)
 ![Java](https://img.shields.io/badge/java-17-blue)
 ![Spring Boot](https://img.shields.io/badge/spring--boot-3.5-green)
@@ -8,6 +9,8 @@
 ![API Gateway](https://img.shields.io/badge/aws-api--gateway-orange)
 ![CI/CD](https://img.shields.io/badge/ci--cd-github--actions-purple)
 ![LocalStack](https://img.shields.io/badge/tested--with-localstack-lightgrey)
+
+
 
 This project is a cloud-native, serverless task management API built with **Spring Boot**, **AWS Lambda**, and **DynamoDB**, designed to demonstrate hands-on expertise in **Java**, **AWS architecture**, and **system design**. It serves as a portfolio artifact for showcasing backend engineering and solution architecture capabilities.
 
