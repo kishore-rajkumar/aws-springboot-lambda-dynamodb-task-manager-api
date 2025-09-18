@@ -26,10 +26,8 @@ sam deploy --guided
 - Save configuration for future deploys
 
 ## Post-Deployment
-
-    Note the API Gateway endpoint from the output
-
-    Verify Lambda functions and DynamoDB table in AWS Console
+- Note the API Gateway endpoint from the output
+- Verify Lambda functions and DynamoDB table in AWS Console
 
 ## Cleanup
 
