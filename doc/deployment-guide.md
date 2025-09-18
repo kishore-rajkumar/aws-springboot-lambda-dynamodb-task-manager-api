@@ -14,9 +14,11 @@ This guide explains how to deploy the Task Manager API using AWS SAM CLI.
 1. **Build the project**
    ```bash
    sam build
+   ```
 2. **Deploy to AWS**
+```bash
 sam deploy --guided
-
+```
 3. **Provide required parameters**
 - Stack name
 - AWS region
