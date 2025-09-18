@@ -102,8 +102,6 @@ This project is a cloud-native, serverless task management API built with **Spri
 
 This section documents real-world challenges encountered while building and deploying the Task Manager API, along with the solutions and architectural insights that shaped the final system.
 
----
-
 ### 1. Credential Resolution Failure in Local and CI Environments  
 ❗ **Problem**: AWS SDK failed to initialize `DynamoDbClient` due to missing credentials.  
 ✅ **Fix**: Injected static credentials via test profile and configured `AwsConfig` to use `StaticCredentialsProvider` conditionally.  
