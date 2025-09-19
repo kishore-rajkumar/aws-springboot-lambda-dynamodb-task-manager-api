@@ -16,9 +16,11 @@ Content-Type: application/json
   "description": "Add usage examples to README",
   "status": "PENDING"
 }
+```
 
 
 **Response**
+```http
 201 Created
 Content-Type: application/json
 
@@ -35,8 +37,9 @@ Content-Type: application/json
 **Request**
 ```http
 GET /tasks
-
+```
 **Response**
+```http
 200 OK
 
 [
@@ -56,9 +59,9 @@ GET /tasks
 ## 🔹 Get Tasks by Status
 ```http
 GET /tasks?status=IN_PROGRESS
-
+```
 **Response**
-
+```http
 200 OK
 
 [
@@ -81,8 +84,9 @@ Content-Type: application/json
   "description": "Add usage examples to README",
   "status": "COMPLETED"
 }
-
+```
 **Response**
+```http
 200 OK
 
 {
@@ -96,8 +100,9 @@ Content-Type: application/json
 **Request**
 ```http
 DELETE /tasks/abc123
-
+```
 **Response**
+```http
 204 No Content
 ```
 
