@@ -35,7 +35,7 @@ This project is a cloud-native, serverless task management API built with **Spri
 
 # 🧭 Architecture Diagram
 
-![Architecture Diagram](doc/architecture-diagram.png)
+![Architecture Diagram](docs/architecture-diagram.png)
 
 
 # ✨ Features
@@ -74,7 +74,7 @@ This project is a cloud-native, serverless task management API built with **Spri
 
 ...
 
-📖 [View full API samples](doc/api-samples.md)
+📖 [View full API samples](docs/api-samples.md)
 
 ### Create a Task
 ```bash
@@ -117,7 +117,7 @@ curl -X PUT https://your-api-url/tasks/{taskId} \
 
 This guide explains how to deploy the Task Manager API using AWS SAM CLI.
 
-📖 [Deployment Guide](doc/deployment-guide.md)
+📖 [Deployment Guide](docs/deployment-guide.md)
 
 
 # 🛠️ Troubleshooting Snapshot
