@@ -72,6 +72,10 @@ This project is a cloud-native, serverless task management API built with **Spri
 
 # 📦 Usage Examples
 
+...
+
+📖 [View full API samples](doc/api-samples.md)
+
 ### Create a Task
 ```bash
 curl -X POST https://your-api-url/tasks \
@@ -104,7 +108,7 @@ curl -X PUT https://your-api-url/tasks/{taskId} \
   }'
   ```
 
-  ### Delete a Task
+ ### Delete a Task
   ```bash
   curl -X DELETE https://your-api-url/tasks/{taskId}
   ```
